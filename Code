@@ -1,0 +1,114 @@
+import pandas as pd
+import matplotlib.pylab as plt
+import numpy as np
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/autos/imports-85.data"
+df = pd.read_csv(url, header = None)
+headers = ['symboling', 'normalized-losses', 'make', 'fuel-type', 'aspiration', 'num-of-doors', 'body-style', 'drive-wheels', 'engine-location', 'wheel-base', 'length', 'width', 'height', 'curb-weight', 'engine-type', 'num-of-cylinders', 'engine-size', 'fuel-system', 'bore', 'stroke', 'compression-ratio', 'horsepower', 'peak-rpm', 'city-mpg', 'highway-mpg', 'price']
+df.columns = headers
+df.replace("?", np.nan, inplace = True)
+df.head(60)
+missing_data = df.isnull()
+missing_data.head(5)
+
+for column in missing_data.columns.values.tolist():
+    print(column)
+    print (missing_data[column].value_counts())
+    print("")
+
+#calculate the mean and replace the NaN with the mean
+avg_norm_loss = df["normalized-losses"].astype("float").mean(axis=0)
+print("Average of normalized-losses:", avg_norm_loss)
+df["normalized-losses"].replace(np.nan, avg_norm_loss, inplace=True)
+
+avg_bore=df['bore'].astype('float').mean(axis=0)
+print("Average of bore:", avg_bore)
+df["bore"].replace(np.nan, avg_bore, inplace=True)
+
+avg_stroke = df["stroke"].astype("float").mean(axis=0)
+print("Average of stroke:", avg_stroke)
+df["stroke"].replace(np.nan, avg_stroke, inplace=True)
+
+avg_horsepower=df['horsepower'].astype('float').mean(axis=0)
+print("Average horsepower:", avg_horsepower)
+df['horsepower'].replace(np.nan, avg_horsepower, inplace=True)
+
+avg_peakrpm=df['peak-rpm'].astype('float').mean(axis=0)
+print("Average peak rpm:", avg_peakrpm)
+df['peak-rpm'].replace(np.nan, avg_peakrpm, inplace=True)
+
+df['num-of-doors'].value_counts()
+df['num-of-doors'].value_counts().idxmax()
+df["num-of-doors"].replace(np.nan, "four", inplace=True)
+df.dropna(subset=["price"], axis=0, inplace=True)
+df.reset_index(drop=True, inplace=True)
+df.head()
+df.dtypes
+df[['bore', 'stroke', 'peak-rpm', 'price']] = df[['bore', 'stroke', 'peak-rpm', 'price']].astype('float')
+df['normalized-losses'] = df['normalized-losses'].astype('int')
+df.dtypes
+df['city-mpg'] = 235/df['city-mpg']
+df.rename(columns={'city-mpg':'city-L/100km'}, inplace=True)
+df['highway-mpg'] = 235/df['highway-mpg']
+df.rename(columns={'highway-mpg':'highway-L/100km'}, inplace = True)
+df['length'] = df['length']/df['length'].max()
+df['width'] = df['width']/df['width'].max()
+df['height'] = df['height']/df['height'].max()
+df[["length","width","height"]].head()
+df["horsepower"]=df["horsepower"].astype(int, copy=True)
+
+%matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
+plt.pyplot.hist(df["horsepower"])
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+bins = np.linspace(min(df["horsepower"]), max(df["horsepower"]), 4)
+bins
+group_names = ['Low', 'Medium', 'High']
+#Apply the function "cut" to determine what each value of df['horsepower'] belongs to
+df['horsepower-binned'] = pd.cut(df['horsepower'], bins, labels=group_names, include_lowest=True )
+df[['horsepower','horsepower-binned']].head(20)
+%matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
+pyplot.bar(group_names, df["horsepower-binned"].value_counts())
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+%matplotlib inline
+import matplotlib as plt
+from matplotlib import pyplot
+
+
+# draw historgram of attribute "horsepower" with bins = 3
+plt.pyplot.hist(df["horsepower"], bins = 3)
+
+# set x/y labels and plot title
+plt.pyplot.xlabel("horsepower")
+plt.pyplot.ylabel("count")
+plt.pyplot.title("horsepower bins")
+
+dummy_variable_1 = pd.get_dummies(df["fuel-type"])
+dummy_variable_1.head(5)
+
+dummy_variable_1.rename(columns={'gas':'fuel-type-gas', 'diesel':'fuel-type-diesel'}, inplace=True)
+dummy_variable_1.head()
+
+# merge data frame "df" and "dummy_variable_1"
+df = pd.concat([df, dummy_variable_1], axis=1)
+# drop original column "fuel-type" from "df"
+df.drop("fuel-type", axis = 1, inplace=True)
+df.head()
+
+#indicator
+dummy_variable_2 = pd.get_dummies(df["aspiration"])
+dummy_variable_2.rename(columns={'std':'aspiration-std', 'turbo':'aspiration-turbo'}, inplace=True)
+dummy_variable_2.head()
+
+df = pd.concat([df, dummy_variable_2], axis=1)
+df.drop("aspiration", axis = 1, inplace=True)
+df.head()
