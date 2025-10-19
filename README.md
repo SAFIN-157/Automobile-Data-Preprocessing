@@ -1,16 +1,19 @@
-# Automobile Data Preprocessing (UCI Imports-85)
+# Data Preprocessing (UCI Imports-85)
 
-This repository contains a complete preprocessing workflow for the **Automobile (Imports-85) dataset** from the UCI Machine Learning Repository.  
+This repository contains a complete preprocessing workflow for the **Automobile (Imports-85) dataset** and **Laptop Pricing dataset**. 
+Automobile dataset was from the UCI Machine Learning Repository.  
 The project demonstrates essential data cleaning and transformation steps to prepare raw data for analysis and machine learning tasks.
 
 ---
 
 ## 📌 Dataset
+# 1
 - Source: [UCI Machine Learning Repository – Automobile Dataset](https://archive.ics.uci.edu/ml/datasets/automobile)
 - Rows: 205
 - Attributes: 26 (mix of categorical, continuous, and integer values)
 - Target variable (commonly): `price`
-
+# 2
+Laptop Pricing Dataset
 ---
 
 ## ⚙️ Preprocessing Steps
