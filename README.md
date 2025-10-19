@@ -13,7 +13,7 @@ The project demonstrates essential data cleaning and transformation steps to pre
 - Attributes: 26 (mix of categorical, continuous, and integer values)
 - Target variable (commonly): `price`
 ## 2
-Laptop Pricing Dataset
+- Laptop Pricing Dataset
 ---
 
 ## ⚙️ Preprocessing Steps
