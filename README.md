@@ -7,12 +7,12 @@ The project demonstrates essential data cleaning and transformation steps to pre
 ---
 
 ## 📌 Dataset
-# 1
+## 1
 - Source: [UCI Machine Learning Repository – Automobile Dataset](https://archive.ics.uci.edu/ml/datasets/automobile)
 - Rows: 205
 - Attributes: 26 (mix of categorical, continuous, and integer values)
 - Target variable (commonly): `price`
-# 2
+## 2
 Laptop Pricing Dataset
 ---
 
